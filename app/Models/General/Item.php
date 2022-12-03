@@ -1,0 +1,42 @@
+<?php
+
+namespace Larashop\Models\General;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Item extends Model
+{
+    use SoftDeletes;  
+    protected $dates = ['deleted_at'];
+    protected $fillable = [        
+        'code',
+        'name',
+        'unit_id',
+        'item_group_id',
+        'substrate_category_id',
+        'photo',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+    ]; 
+
+    public function units(){
+        return $this->belongsTo(Unit::class, 'unit_id', 'id');         
+    }
+
+    public function itemGroups(){
+        return $this->belongsTo(ItemGroup::class, 'item_group_id', 'id');         
+    }
+
+    public function substrateCategories(){
+        return $this->belongsTo(SubstrateCategory::class, 'substrate_category_id', 'id');         
+    }
+    public function userCreateInfo(){
+        return $this->belongsTo('Larashop\Models\User','created_by');
+    }
+
+    public function userUpdateInfo(){
+        return $this->belongsTo('Larashop\Models\User','updated_by');
+    } 
+}
